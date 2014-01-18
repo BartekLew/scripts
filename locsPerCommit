@@ -1,0 +1,16 @@
+#!/bin/bash
+#to be ran in repo with no uncommited changes!
+
+set -e
+
+readarray commits < <(git log --pretty=oneline | tac)
+
+for commit in "${commits[@]}"; do
+    sha1=`echo $commit | awk '{print $1}'`
+    name=`echo $commit | awk '{$1 = ""; print $0}'`
+
+    git checkout $sha1 &> /dev/null
+
+    loc=`find * -type f | xargs wc -l | tail -n1 | awk '{print $1}'`
+    echo $loc $name
+done
