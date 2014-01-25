@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[ "$#" -lt "2" ]] ; then
+    echo "usage: gitFrom [user name] [git URL]"
+    echo "It would clone repository frome URL, appending user name to it."
+    exit 1
+fi
+
+user=$1
+origin=$2
+url=`echo $origin | perl -pe "s#://#://$user@#"`
+
+git clone $url
