@@ -1,0 +1,58 @@
+set number
+set expandtab
+
+" indenting
+set tabstop=4
+set shiftwidth=4
+set smartindent
+" But for ruby:
+autocmd Bufenter *.rb set tabstop=2
+autocmd Bufenter *.rb set shiftwidth=2
+
+let mapleader="-"
+
+" Config Edit/Apply
+noremap <leader>ce :split $MYVIMRC<cr>
+noremap <leader>ca :source $MYVIMRC<cr>
+
+" Line (Un-)Comment
+autocmd Bufenter *.tex noremap <leader>lc :s#^#%#<cr>
+autocmd Bufenter *.tex noremap <leader>luc :s#^%##<cr>
+autocmd Bufenter *.c,*.h,*.css noremap <leader>lc :s#^\(.*\)$#/*\1*/#<cr>
+autocmd Bufenter *.c,*.h,*.css noremap <leader>luc :s#^\s*/\*\(.*\)\*/\s*$#\1#<cr>
+
+" Open Header file
+autocmd Bufenter *.c,*.cpp noremap <leader>oh :e %:p:r.h<cr>
+
+" Text Substitute
+noremap <leader>ts :%s#<c-r><c-w>
+noremap <leader>tS :s#<c-r><c-w>
+
+" Text Grep
+noremap <leader>tg :grep -Rn <c-r><c-w> .
+noremap <leader>tG :split<cr>:grep -Rn <c-r><c-w> .
+
+" Text Find
+noremap <leader>tf /<c-r><c-w><cr>
+noremap <leader>tF :split<cr>/<c-r><c-w><cr>
+
+" Allow <tab> character in makefile files.
+autocmd Bufenter Makefile,makefile :set noexpandtab
+
+" List Show, Next, Previous, Goto
+noremap <leader>ls :clist<cr>
+noremap <leader>ln :cnext<cr>
+noremap <leader>lp :cprevious<cr>
+noremap <leader>lg :cc
+
+" Shell Ls
+noremap <leader>sl :! ls 
+
+" Window Split
+noremap <leader>ws :vsplit
+noremap <leader>wS :split
+
+" Buffer list/choose
+noremap <leader>bl :buffers<cr>
+noremap <leader>bc :buffers<cr>:b
+
