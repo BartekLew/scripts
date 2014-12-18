@@ -1,5 +1,22 @@
+set encoding=utf8
+set autoindent
 set number
 set expandtab
+set backspace=indent,eol,start
+set ruler
+set laststatus=2
+set cursorline
+
+let mapleader="-"
+
+let g:Gtags_OpenQuickfixWindow = 0
+source ~/.vim/gtags.vim
+noremap <leader>fs :Gtags <c-r><c-w><cr>
+noremap <leader>fr :Gtags -rx <c-r><c-w><cr>
+noremap <leader>fd ?[a-zA-Z0-9_]\s\+<c-r><c-w>[^a-zA-Z0-9_]<cr>
+
+" more convenient colors
+:highlight Folded ctermbg=blue ctermfg=white
 
 " indenting
 set tabstop=4
@@ -9,11 +26,29 @@ set smartindent
 autocmd Bufenter *.rb set tabstop=2
 autocmd Bufenter *.rb set shiftwidth=2
 
-let mapleader="-"
+" Remap scrolling and moving windows
+noremap <c-j> <c-e>
+noremap <c-k> <c-y>
+noremap <c-h> :bp<cr>
+noremap <c-l> :bn<cr>
+
+" Window Close
+noremap <leader>wc <c-w>c
+
+"split small/big
+noremap <leader>ss :split<cr>:resize 10<cr>
+noremap <leader>sS :split<cr>:resize 5<cr>
+noremap <leader>sb :split<cr>:resize 25<cr>
 
 " Config Edit/Apply
 noremap <leader>ce :split $MYVIMRC<cr>
 noremap <leader>ca :source $MYVIMRC<cr>
+
+" How grep should be called:
+noremap <leader>-g :grep --binary-files=without-match --exclude="CVS/*" -Rn
+
+" Find Class
+map <leader>fc <leader>-g "class <c-r><c-w>" .
 
 " Line (Un-)Comment
 autocmd Bufenter *.tex noremap <leader>lc :s#^#%#<cr>
@@ -21,20 +56,32 @@ autocmd Bufenter *.tex noremap <leader>luc :s#^%##<cr>
 autocmd Bufenter *.c,*.h,*.css noremap <leader>lc :s#^\(.*\)$#/*\1*/#<cr>
 autocmd Bufenter *.c,*.h,*.css noremap <leader>luc :s#^\s*/\*\(.*\)\*/\s*$#\1#<cr>
 
-" Open Header file
-autocmd Bufenter *.c,*.cpp noremap <leader>oh :e %:p:r.h<cr>
+" Line Indent
+vnoremap <c-t> :s/^/    /<cr>
+vnoremap <c-d> :s/^    //<cr>
+
+" Open Header/Source
+autocmd Bufenter *.c,*.cpp noremap <leader>oh :vsplit %:p:r.h<cr>
+autocmd Bufenter *.h noremap <leader>os :vsplit %:p:r.c<cr>
+noremap <leader>od :vsplit %:h
 
 " Text Substitute
 noremap <leader>ts :%s#<c-r><c-w>
 noremap <leader>tS :s#<c-r><c-w>
 
 " Text Grep
-noremap <leader>tg :grep -Rn <c-r><c-w> .
-noremap <leader>tG :split<cr>:grep -Rn <c-r><c-w> .
+map <leader>tg <leader>-g <c-r><c-w> %:h
 
 " Text Find
 noremap <leader>tf /<c-r><c-w><cr>
 noremap <leader>tF :split<cr>/<c-r><c-w><cr>
+
+" Goto Declaration/Import
+noremap <leader>gd ?\a\(\s\\|\*\)*<c-r><c-w><cr>
+autocmd Bufenter *.java noremap <leader>gi ?import.*\.<c-r><c-w><cr>
+
+" grep class
+map <leader>gc <leader>-g . -e 'class 
 
 " Allow <tab> character in makefile files.
 autocmd Bufenter Makefile,makefile :set noexpandtab
@@ -52,7 +99,13 @@ noremap <leader>sl :! ls
 noremap <leader>ws :vsplit
 noremap <leader>wS :split
 
-" Buffer list/choose
+" Buffer list/set and close (without closing window)
 noremap <leader>bl :buffers<cr>
-noremap <leader>bc :buffers<cr>:b
+noremap <leader>bs :buffers<cr>:b
+noremap <leader>bc :b#<cr>:bd#<cr>
 
+"Fold Brace
+noremap <leader>fb V%zf
+
+" Delete File
+noremap <leader>df :!rm %<cr>
