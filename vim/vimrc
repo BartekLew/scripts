@@ -1,3 +1,6 @@
+" My way for using Vim. As simple as possible.
+" Bartek Lew
+
 set encoding=utf8
 set autoindent
 set number
@@ -8,15 +11,37 @@ set laststatus=2
 set cursorline
 
 let mapleader="-"
+:highlight Folded ctermbg=blue ctermfg=white
 
+" Allow <tab> character in makefile files.
+autocmd Bufenter Makefile,makefile :set noexpandtab
+
+" Load Gtags from GNU Global for symbols lookup.
+" I want no quickfix window after each call.
 let g:Gtags_OpenQuickfixWindow = 0
 source ~/.vim/gtags.vim
+
+" Dead simple symbol lookup:
+" Find Symbol, Find Reference, Find Declaration
 noremap <leader>fs :Gtags <c-r><c-w><cr>
 noremap <leader>fr :Gtags -rx <c-r><c-w><cr>
 noremap <leader>fd ?[a-zA-Z0-9_]\s\+<c-r><c-w>[^a-zA-Z0-9_]<cr>
 
-" more convenient colors
-:highlight Folded ctermbg=blue ctermfg=white
+" Working on raw text:
+" Text Substitute
+noremap <leader>ts :%s#<c-r><c-w>
+noremap <leader>tS :s#<c-r><c-w>
+
+" Text Grep
+map <leader>tg <leader>-g <c-r><c-w> %:h
+
+" Text Find
+noremap <leader>tf /<c-r><c-w><cr>
+noremap <leader>tF :split<cr>/<c-r><c-w><cr>
+
+" Goto Declaration/Import
+noremap <leader>gd ?\a\(\s\\|\*\)*<c-r><c-w><cr>
+autocmd Bufenter *.java noremap <leader>gi ?import.*\.<c-r><c-w><cr>
 
 " indenting
 set tabstop=4
@@ -47,9 +72,6 @@ noremap <leader>ca :source $MYVIMRC<cr>
 " How grep should be called:
 noremap <leader>-g :grep --binary-files=without-match --exclude="CVS/*" -Rn
 
-" Find Class
-map <leader>fc <leader>-g "class <c-r><c-w>" .
-
 " Line (Un-)Comment
 autocmd Bufenter *.tex noremap <leader>lc :s#^#%#<cr>
 autocmd Bufenter *.tex noremap <leader>luc :s#^%##<cr>
@@ -65,26 +87,6 @@ autocmd Bufenter *.c,*.cpp noremap <leader>oh :vsplit %:p:r.h<cr>
 autocmd Bufenter *.h noremap <leader>os :vsplit %:p:r.c<cr>
 noremap <leader>od :vsplit %:h
 
-" Text Substitute
-noremap <leader>ts :%s#<c-r><c-w>
-noremap <leader>tS :s#<c-r><c-w>
-
-" Text Grep
-map <leader>tg <leader>-g <c-r><c-w> %:h
-
-" Text Find
-noremap <leader>tf /<c-r><c-w><cr>
-noremap <leader>tF :split<cr>/<c-r><c-w><cr>
-
-" Goto Declaration/Import
-noremap <leader>gd ?\a\(\s\\|\*\)*<c-r><c-w><cr>
-autocmd Bufenter *.java noremap <leader>gi ?import.*\.<c-r><c-w><cr>
-
-" grep class
-map <leader>gc <leader>-g . -e 'class 
-
-" Allow <tab> character in makefile files.
-autocmd Bufenter Makefile,makefile :set noexpandtab
 
 " List Show, Next, Previous, Goto
 noremap <leader>ls :clist<cr>
