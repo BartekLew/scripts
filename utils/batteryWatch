@@ -1,0 +1,28 @@
+#!/usr/bin/env perl
+
+use strict;
+
+my $warnLevel = 10;
+my $interval = 1000;
+
+sub power{
+    my $result = {};
+    my $level = `acpi`;
+
+    $level =~ m/(\d?\d)%/;
+    $result->{level} = $1;
+
+    $result->{unpluged} = $level =~ m/remaining/;
+
+    return $result;
+}
+
+while( "True" ){
+    my $power = power();
+    if( $power->{level} <= $warnLevel && $power->{unpluged} ){
+        print "\nWatch your power level, dude, it's just $power->{level}%.\n";
+    }
+    sleep( $interval );
+}
+
+

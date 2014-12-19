@@ -1,0 +1,8 @@
+#!/bin/bash
+
+drive=$1
+if [[ $# == 0 ]]; then
+    drive=sdb1
+fi
+
+sudo mount -o uid=$(whoami) /dev/$drive /mnt/usb0
