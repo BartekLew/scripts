@@ -5,4 +5,5 @@ if [[ $# == 0 ]]; then
     drive=sdb1
 fi
 
-sudo mount -o uid=$(whoami) /dev/$drive /mnt/usb0
+export usb=/mnt/usb0
+sudo mount -o uid=$(whoami) /dev/$drive $usb
