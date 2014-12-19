@@ -7,4 +7,4 @@ cp vim/vimrc ~/.vimrc
 
 mkdir $installPrefix
 mkdir $installBin
-cp git/* $installBin
+cp utils/* $installBin
