@@ -2,8 +2,13 @@
 
 installPrefix=~/.local
 installBin=$installPrefix/bin
+vimrc=~/.vimrc
 
-cp vim/vimrc ~/.vimrc
+if [[ -f $vimrc ]]; then
+    cp $vimrc $vimrc.bak
+    echo vimrc '->' $vimrc '->' $vimrc.bak
+fi
+cp vim/vimrc $vimrc
 
 mkdir $installPrefix
 mkdir $installBin
