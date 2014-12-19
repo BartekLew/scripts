@@ -1,0 +1,4 @@
+#!/bin/bash
+#sudo implementation for cygwin environment
+
+cygstart --action=runas "$@"
