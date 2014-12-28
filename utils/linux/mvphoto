@@ -1,0 +1,9 @@
+#!/bin/sh
+
+destination=/mnt/usb0/DCIM
+
+if usbon $1; then
+    mv $destination/*/* .
+    rm -r $destination/*
+    usboff
+fi
