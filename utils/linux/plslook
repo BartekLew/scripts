@@ -4,7 +4,7 @@ if [[ $# < 1 ]];then
     echo "plslook pattern - look for song on mpd playlist"
     echo "plslook play pattern - play first match of such a lookup"
 elif [[ "$1" == "play" ]];then
-    mpc play $(mpc playlist | nl -n ln | grep $2 | head -n 1 | cut -d' ' -f1)
+    mpc play $(mpc playlist | nl -n ln | grep -i "$2" | head -n 1 | cut -d' ' -f1)
 else
-    mpc playlist | nl | grep $1
+    mpc playlist | nl | grep -i "$1"
 fi
