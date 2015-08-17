@@ -37,6 +37,26 @@ function init {
     first
 }
 
+function previous {
+    test_toc
+
+    total_hashes=$(wc -l $toc_file)
+    current_hash=$(git rev-parse --short HEAD)
+    current_version=$(grep -n -m1 $current_hash $toc_file | cut -d: -f1 )
+    if [[ "$?" != 0 ]]; then
+        echo "ce: HEAD is not in toc file."
+        exit 1;
+    fi
+    ((current_version++))
+    if [[ $current_version > $total_hashes ]]; then
+        echo "ce: already at the beginning of evolution. Have a nice day!"
+        exit 1
+    fi
+
+    next_hash=$(head -$current_version $toc_file | tail -1 | cut -d' ' -f1)
+    git checkout $next_hash > /dev/null
+}
+
 function next {
     test_toc
 
@@ -78,7 +98,7 @@ test_git
 
 case $1 in
   "init") init;;
-  "previous") echo "unimplemented";;
+  "previous") previous;;
   "next") next;;
   "first") first;;
   "last") last;;
