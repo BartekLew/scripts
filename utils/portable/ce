@@ -53,14 +53,21 @@ function next {
     fi
 
     next_hash=$(head -$current_version $toc_file | tail -1 | cut -d' ' -f1)
-    git checkout $next_hash
+    git checkout $next_hash > /dev/null
 }
 
 function first {
     test_toc
 
     first_hash=$(tail -1 $toc_file | cut -d' ' -f1)
-    git checkout $first_hash
+    git checkout $first_hash > /dev/null
+}
+
+function last {
+    test_toc
+
+    last_hash=$(head -1 $toc_file | cut -d' ' -f1)
+    git checkout $last_hash > /dev/null
 }
 
 if [[ "$#" != 1 ]]; then
@@ -74,6 +81,6 @@ case $1 in
   "previous") echo "unimplemented";;
   "next") next;;
   "first") first;;
-  "last") echo "unimplemented";;
+  "last") last;;
   *) need_help
 esac
