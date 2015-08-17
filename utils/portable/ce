@@ -14,8 +14,6 @@ function need_help {
     echo "  * last"
     echo "  * previous"
     echo "  * next"
-    echo "  * quit [branch] - quit code evolve branch and delete it. If not"
-    echo "    specified, master is selected"
     exit 1
 }
 
@@ -30,27 +28,21 @@ function test_branch {
 }
 
 function init {
-    test_branch $branch_name
-    if [[ "$?" == 0 ]]; then
-        echo "ce: you are currently on code_evolve branch, can't init"
-        exit 1
-    fi
-
     git log --oneline > $log_file
-    git branch -D $branch_name > /dev/null
-    git checkout -b $branch_name > /dev/null
 }
 
 function next {
-    test_branch $branch_name
-    
     if [[ ! -e $log_file ]]; then
-        echo "ce: log file($log_file) not found."
+        echo "ce: no log file($log_file) found"
         exit 1
     fi
 
     current_hash=$(git rev-parse --short HEAD)
-    current_version=$(grep -n -m1 $current_hash $log_file | cut -d: -f1 ) 
+    current_version=$(grep -n -m1 $current_hash $log_file | cut -d: -f1 )
+    if [[ "$?" != 0 ]]; then
+        echo "ce: HEAD is not in log file."
+        exit 1;
+    fi
     ((current_version--))
     if [[ $current_version -le 0 ]]; then
         echo "ce: already at the end of evolution. Have a nice day!"
@@ -71,6 +63,5 @@ case $1 in
   "next") next;;
   "first") echo "unimplemented";;
   "last") echo "unimplemented";;
-  "quit") echi "unimplemented";;
   *) need_help
 esac
