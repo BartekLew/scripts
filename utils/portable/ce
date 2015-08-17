@@ -1,11 +1,10 @@
 #!/bin/sh
 
-toc_file='.code_evolve_toc'
-branch_name='code_evolve'
+toc_file='.code_evolution_toc'
 
 function need_help {
     echo
-    echo "code evolve -- present following code versions using git."
+    echo "code evolution -- present following code versions using git."
     echo "USAGE: ce init|first|previous|next|last"
     echo "  * init -> use current commit as final version. Create new branch"
     echo "    ending on this commit and move to oldest commit. Then you can"
@@ -40,7 +39,7 @@ function init {
 function previous {
     test_toc
 
-    total_hashes=$(wc -l $toc_file)
+    total_hashes=$(wc -l $toc_file | cut -d' ' -f1)
     current_hash=$(git rev-parse --short HEAD)
     current_version=$(grep -n -m1 $current_hash $toc_file | cut -d: -f1 )
     if [[ "$?" != 0 ]]; then
@@ -48,7 +47,7 @@ function previous {
         exit 1;
     fi
     ((current_version++))
-    if [[ $current_version > $total_hashes ]]; then
+    if [[ $current_version -gt $total_hashes ]]; then
         echo "ce: already at the beginning of evolution. Have a nice day!"
         exit 1
     fi
