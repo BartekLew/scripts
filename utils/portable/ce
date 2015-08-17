@@ -1,0 +1,56 @@
+#!/bin/sh
+
+log_file='.code_evolve_log'
+branch_name='code_evolve'
+
+function need_help {
+    echo
+    echo "code evolve -- present following code versions using git."
+    echo "USAGE: ce init|first|previous|next|last"
+    echo "  * init -> use current commit as final version. Create new branch"
+    echo "    ending on this commit and move to oldest commit. Then you can"
+    echo "    navigate using commands:"
+    echo "  * first"
+    echo "  * last"
+    echo "  * previous"
+    echo "  * next"
+    echo "  * quit [branch] - quit code evolve branch and delete it. If not"
+    echo "    specified, master is selected"
+    exit 1
+}
+
+function test_branch {
+    git status &> /dev/null
+    if [[ "$?" != "0" ]]; then
+        echo "ce: works only in git managed directory."
+        exit 1
+    fi
+
+    git branch | grep "* $1" &> /dev/null
+}
+
+function init {
+    test_branch $branch_name
+    if [[ "$?" == 0 ]]; then
+        echo "ce: you are currently on code_evolve branch, can't init"
+        exit 1
+    fi
+
+    git log --oneline > $log_file
+    git branch -d $branch_name &> /dev/null
+    git checkout -b $branch_name > /dev/null
+}
+
+if [[ "$#" != 1 ]]; then
+    need_help
+fi
+
+case $1 in
+  "init") init;;
+  "previous") echo "unimplemented";;
+  "next") echo "unimplemented";;
+  "first") echo "unimplemented";;
+  "last") echo "unimplemented";;
+  "quit") echi "unimplemented";;
+  *) need_help
+esac
