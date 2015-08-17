@@ -1,6 +1,6 @@
 #!/bin/sh
 
-log_file='.code_evolve_log'
+toc_file='.code_evolve_toc'
 branch_name='code_evolve'
 
 function need_help {
@@ -17,30 +17,28 @@ function need_help {
     exit 1
 }
 
-function test_branch {
+function test_git {
     git status &> /dev/null
     if [[ "$?" != "0" ]]; then
         echo "ce: works only in git managed directory."
         exit 1
     fi
-
-    git branch | grep "* $1" &> /dev/null
 }
 
 function init {
-    git log --oneline > $log_file
+    git log --oneline > $toc_file
 }
 
 function next {
-    if [[ ! -e $log_file ]]; then
-        echo "ce: no log file($log_file) found"
+    if [[ ! -e $toc_file ]]; then
+        echo "ce: no toc file($toc_file) found"
         exit 1
     fi
 
     current_hash=$(git rev-parse --short HEAD)
-    current_version=$(grep -n -m1 $current_hash $log_file | cut -d: -f1 )
+    current_version=$(grep -n -m1 $current_hash $toc_file | cut -d: -f1 )
     if [[ "$?" != 0 ]]; then
-        echo "ce: HEAD is not in log file."
+        echo "ce: HEAD is not in toc file."
         exit 1;
     fi
     ((current_version--))
@@ -49,7 +47,7 @@ function next {
         exit 1
     fi
 
-    next_hash=$(head -$current_version $log_file | tail -1 | cut -d' ' -f1)
+    next_hash=$(head -$current_version $toc_file | tail -1 | cut -d' ' -f1)
     git checkout $next_hash
 }
 
@@ -57,11 +55,13 @@ if [[ "$#" != 1 ]]; then
     need_help
 fi
 
+test_git
+
 case $1 in
   "init") init;;
   "previous") echo "unimplemented";;
   "next") next;;
-  "first") echo "unimplemented";;
+  "first") first;;
   "last") echo "unimplemented";;
   *) need_help
 esac
