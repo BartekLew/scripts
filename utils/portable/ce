@@ -37,8 +37,28 @@ function init {
     fi
 
     git log --oneline > $log_file
-    git branch -d $branch_name &> /dev/null
+    git branch -D $branch_name > /dev/null
     git checkout -b $branch_name > /dev/null
+}
+
+function next {
+    test_branch $branch_name
+    
+    if [[ ! -e $log_file ]]; then
+        echo "ce: log file($log_file) not found."
+        exit 1
+    fi
+
+    current_hash=$(git rev-parse --short HEAD)
+    current_version=$(grep -n -m1 $current_hash $log_file | cut -d: -f1 ) 
+    ((current_version--))
+    if [[ $current_version -le 0 ]]; then
+        echo "ce: already at the end of evolution. Have a nice day!"
+        exit 1
+    fi
+
+    next_hash=$(head -$current_version $log_file | tail -1 | cut -d' ' -f1)
+    git checkout $next_hash
 }
 
 if [[ "$#" != 1 ]]; then
@@ -48,7 +68,7 @@ fi
 case $1 in
   "init") init;;
   "previous") echo "unimplemented";;
-  "next") echo "unimplemented";;
+  "next") next;;
   "first") echo "unimplemented";;
   "last") echo "unimplemented";;
   "quit") echi "unimplemented";;
