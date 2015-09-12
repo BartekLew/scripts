@@ -1,4 +1,4 @@
-#!/bin/sh -x 
+#!/bin/sh
 
 outputDirectory="."
 if [[ $# > 0 ]];then
