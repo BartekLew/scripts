@@ -1,0 +1,18 @@
+#!/bin/sh -x 
+
+outputDirectory="."
+if [[ $# > 0 ]];then
+    outputDirectory=$1
+fi
+
+for dng in IMGP*.DNG
+do
+    echo $dng
+    picID=$(echo $dng | sed -e 's/IMGP\(.*\)\.DNG/\1/')
+    picDate=$(exifdate $dng)
+    for picFile in IMGP$picID.*
+    do
+        extension=$(echo $picFile | sed -e "s/IMGP$picID\.\(.*\)/\1/")
+        mv $picFile $outputDirectory/$picDate-$picID.$extension
+    done
+done | wait_nfo $(ls IMGP*.DNG | wc -l)
