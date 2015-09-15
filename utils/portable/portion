@@ -1,0 +1,53 @@
+#!/bin/sh
+
+trace_file=.portion-trace
+
+function init {
+    range=$@
+    ls $range > $trace_file
+}
+
+function get_portion {
+    total_portions=$(wc -l $trace_file | cut -d' ' -f1) 
+    portion_size=$1
+    portions_left=$((total_portions-portion_size))
+
+    head -n$portion_size $trace_file
+    if (( portions_left > 0 )); then
+        tail -n$portions_left $trace_file > $trace_file~
+        mv $trace_file~ $trace_file
+    else
+        rm $trace_file*
+    fi
+}
+
+function nonsense {
+    less $0
+    exit 1
+}
+
+while (( "$#" )); do
+    if [[ "$size" == "" ]]; then
+        size=$1
+    elif [[ "$range" == "" ]]; then
+        range=$@
+    else
+        nonsense
+    fi
+
+    shift
+done
+
+if [[ "$range" != "" ]]; then
+    init $range
+fi
+
+if [[ ! -e "$trace_file" ]]; then
+    nonsense
+fi
+
+if [[ "$size" == "" ]]; then
+    size=10
+fi
+
+get_portion $size
