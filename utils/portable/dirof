@@ -1,0 +1,16 @@
+#!/bin/sh -x
+
+if [[ "$#" == 0 ]]; then
+    less $0
+    exit 1
+fi
+
+output_prefix='/tmp/dirof/'
+output="$output_prefix/$RANDOM"
+mkdir $output_prefix
+mkdir $output
+
+for file in $@; do
+    cp "$file" "$output/$file"
+done
+echo $output
