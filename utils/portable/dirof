@@ -1,16 +1,11 @@
-#!/bin/sh -x
+#!/bin/sh
 
-if [[ "$#" == 0 ]]; then
-    less $0
-    exit 1
-fi
-
-output_prefix='/tmp/dirof/'
+output_prefix='/tmp/dirof'
 output="$output_prefix/$RANDOM"
 mkdir $output_prefix
 mkdir $output
 
-for file in $@; do
+while read file; do
     cp "$file" "$output/$file"
 done
 echo $output
