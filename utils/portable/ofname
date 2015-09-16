@@ -1,0 +1,5 @@
+#!/bin/sh
+
+while read line; do
+    eval "echo \"$line\"*.*"
+done
