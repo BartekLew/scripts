@@ -1,0 +1,11 @@
+#!/bin/sh
+
+cd ~/Downloads
+while read link; do
+    file=$(youtube-dl "$link" | grep ffmpeg | cut -d'"' -f2)
+    mpc pause
+    mplayer "$file" > /dev/null
+    echo "what now with $file?"
+    $SHELL
+done
+
