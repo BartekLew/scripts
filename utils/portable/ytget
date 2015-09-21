@@ -1,8 +1,16 @@
-#!/bin/sh
+#!/bin/sh -x
 
 cd ~/Downloads
 while read link; do
-    file=$(youtube-dl "$link" | grep ffmpeg | cut -d'"' -f2)
+    flags=''
+    echo $link | grep -P ^audio
+    if [[ $? == '0' ]]; then
+        link=$(echo $link | sed s/^audio//)
+        flags='-x'
+    fi
+
+    file=$(youtube-dl $flags "$link" | grep ffmpeg | head -n1 | cut -d'"' -f2)
+
     mpc pause
     mplayer "$file" > /dev/null
     echo "what now with $file?"
