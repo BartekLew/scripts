@@ -6,6 +6,6 @@ mkdir $output_prefix
 mkdir $output
 
 while read file; do
-    cp "$file" "$output/$file"
+    cp $file $output
 done
 echo $output
