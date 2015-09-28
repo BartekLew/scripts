@@ -1,9 +1,14 @@
 #!/bin/sh
 
 destination=/mnt/usb0/DCIM
+log=/tmp/mvphoto-$RANDOM
 
 if usbon $1; then
-    mv $destination/*/* .
-    rm -r $destination/*
+    all_dng=$destination/*/*DNG
+    total=$(echo $all_dng | wc -w)
+    echo "moving_files"
+    mv -v $all_dng . | wait_nfo $total
+    echo "clean-up"
+    rmdir $destination/*
     usboff
 fi
