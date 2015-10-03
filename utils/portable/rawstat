@@ -5,10 +5,10 @@ require 'inifile'
 ARGV.each do |file|
   handle = IniFile.load( file )
   group = handle['Luminance Curve']
-  if group['Brightness'] == 0 then
-      puts 'inf'
-  else
-    ratio = group['Contrast'] / group['Brightness']
-    puts ratio
-  end
+  brightness = group['Brightness']
+  if brightness == 0 then brightness = 1 end
+  contrast = group['Contrast']
+  if contrast == 0 then contrast = 1 end
+  ratio = contrast / brightness
+  puts ratio
 end
