@@ -1,0 +1,29 @@
+#!/bin/sh
+
+presets_directory="$HOME/.local/share/rawtherapee"
+presets="$presets_directory/*"
+presets_count=$(echo $presets | wc -w)
+
+if [[ "$presets_count" == 1 ]] && [[ ! -e $presets ]]
+then
+    echo "No presets found in $presets_directory."
+    exit 1
+fi
+
+targets_count=$#
+total_elements=$((targets_count*presets_count))
+for target in $@
+do
+    extension=$(echo $target | sed 's/.*\.//')
+    name=${target%.$extension}
+    for preset in $presets
+    do
+        preset_name=$(basename $preset)
+        preset_name=${preset_name%.pp3}
+        output="$name-$preset_name.jpg"
+    
+        echo $output
+        rawtherapee -p $preset -o $output -c $target\
+            > /dev/null
+    done
+done | wait_nfo $total_elements
