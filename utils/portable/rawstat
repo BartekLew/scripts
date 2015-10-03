@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'inifile'
+
+ARGV.each do |file|
+  handle = IniFile.load( file )
+  group = handle['Luminance Curve']
+  if group['Brightness'] == 0 then
+      puts 'inf'
+  else
+    ratio = group['Contrast'] / group['Brightness']
+    puts ratio
+  end
+end
