@@ -25,5 +25,6 @@ do
         echo $output
         rawtherapee -p $preset -o $output -c $target\
             > /dev/null
+        convert -pointsize 50 label:"$output" -gravity Center $output -append $output
     done
 done | wait_nfo $total_elements
