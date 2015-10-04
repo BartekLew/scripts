@@ -9,6 +9,6 @@ ARGV.each do |file|
   if brightness == 0 then brightness = 1 end
   contrast = group['Contrast']
   if contrast == 0 then contrast = 1 end
-  ratio = contrast / brightness
+  ratio = contrast.to_f / brightness
   puts ratio
 end

@@ -1,4 +1,4 @@
 #!/bin/sh
 
-$1 &> /tmp/log-$1-$RANDOM &
+$@ &> /tmp/log-$1-$RANDOM &
 disown
