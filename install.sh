@@ -20,7 +20,7 @@ if uname | grep "CYGWIN" &> /dev/null; then
     cp utils/cygwin/* $installBin
 elif [[ $(uname) == "Linux" ]]; then
     cp utils/linux/* $installBin
-    cp env/shell.cfg $installEtc
+    cp -n env/shell.cfg $installEtc
 
     config_cmd="source $installEtc/shell.cfg"
     grep "$config_cmd" $shrc
