@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+btMAC=$bluetooth_node
+destination=~/.local/mnt/bt0
+
+sudo modprobe btusb
+sudo systemctl start bluetooth.service
+echo "power on
+agent on" | bluetoothctl > /dev/null
+
+echo Mounting bluetooth device on $destination. Running subshell.
+echo Quit subshell to unmount filesystem.
+obexfs -b $btMAC $destination
+cd $destination
+$SHELL -i
+cd
+fusermount -u $destination
