@@ -28,6 +28,8 @@ int main( int argc, char **argv ){
         get_action_title( &action );
         update_status( action );
     }
+
+    printf( "\n" );
     return 0;
 }
 
