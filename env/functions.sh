@@ -8,3 +8,7 @@ getaudio() {
     done
 }
 
+do_math() {
+    echo "scale=2;$@" | bc
+}
+
