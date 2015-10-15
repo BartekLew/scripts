@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 cd ~/Downloads
 while read link; do
@@ -9,7 +9,10 @@ while read link; do
         flags='-x'
     fi
 
-    file=$(youtube-dl $flags "$link" | grep ffmpeg | head -n1 | cut -d'"' -f2)
+    tmpfile=/tmp/ytget-$RANDOM
+    youtube-dl $flags "$link" | tee $tmpfile
+    export file=$(cat $tmpfile | grep ffmpeg | head -n1 | cut -d'"' -f2)
+    rm $tmpfile
 
     mpc pause
     mplayer "$file" > /dev/null
