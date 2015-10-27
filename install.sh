@@ -16,6 +16,8 @@ mkdir -p $installPrefix
 mkdir -p $installBin
 mkdir -p $installEtc
 
+cp template.tex $installPrefix/etc
+
 if uname | grep "CYGWIN" &> /dev/null; then
     cp utils/cygwin/* $installBin
 elif [[ $(uname) == "Linux" ]]; then

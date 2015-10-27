@@ -1,0 +1,30 @@
+#!/bin/sh
+
+text_file=$1
+template=~/.local/etc/template.tex
+pdf_viewer='evince'
+
+if [[ ! -e "$text_file" ]]; then
+    echo "$text_file does not exist"
+    exit 1
+fi
+
+tmp_name="texize-$RANDOM"
+tmp_file="/tmp/$tmp_name.tex"
+
+while read -r line
+do
+    if [[ "$line" == "%TEXT HERE" ]]; then
+        cat $text_file
+    else
+        echo -E "$line"
+    fi
+done < $template > $tmp_file
+
+pdf_file="${text_file%.txt}.pdf"
+pdflatex "$tmp_file"
+
+mv "$tmp_name.pdf" $pdf_file
+rm $tmp_name.*
+
+$pdf_viewer $pdf_file
