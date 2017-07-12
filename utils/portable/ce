@@ -39,9 +39,9 @@ function init {
 function previous {
     test_toc
 
-    total_hashes=$(wc -l $toc_file | cut -d' ' -f1)
+    total_hashes=$(wc -l $toc_file | awk '{print $1;}')
     current_hash=$(git rev-parse --short HEAD)
-    current_version=$(grep -n -m1 $current_hash $toc_file | cut -d: -f1 )
+    current_version=$(awk "/$current_hash/ {print NR;}" $toc_file)
     if [[ "$?" != 0 ]]; then
         echo "ce: HEAD is not in toc file."
         exit 1;
@@ -52,7 +52,7 @@ function previous {
         exit 1
     fi
 
-    next_hash=$(head -$current_version $toc_file | tail -1 | cut -d' ' -f1)
+    next_hash=$(awk "NR == $current_version { print \$1; }" $toc_file)
     git checkout $next_hash > /dev/null
 }
 
@@ -60,7 +60,7 @@ function next {
     test_toc
 
     current_hash=$(git rev-parse --short HEAD)
-    current_version=$(grep -n -m1 $current_hash $toc_file | cut -d: -f1 )
+    current_version=$(awk "/$current_hash/ {print NR;}" $toc_file)
     if [[ "$?" != 0 ]]; then
         echo "ce: HEAD is not in toc file."
         exit 1;
@@ -71,21 +71,21 @@ function next {
         exit 1
     fi
 
-    next_hash=$(head -$current_version $toc_file | tail -1 | cut -d' ' -f1)
+    next_hash=$(awk "NR == $current_version { print \$1; }" $toc_file)
     git checkout $next_hash > /dev/null
 }
 
 function first {
     test_toc
 
-    first_hash=$(tail -1 $toc_file | cut -d' ' -f1)
+    first_hash=$(awk 'END{ print $1; }' $toc_file)
     git checkout $first_hash > /dev/null
 }
 
 function last {
     test_toc
 
-    last_hash=$(head -1 $toc_file | cut -d' ' -f1)
+    last_hash=$(awk 'NR == 1{ print $1; }' $toc_file)
     git checkout $last_hash > /dev/null
 }
 
