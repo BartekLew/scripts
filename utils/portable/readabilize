@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# download page and make it more readable
+
+url="$1"
+name="$2.html"
+
+if [[ -z "$1" ]]; then
+    echo "Usage: readabilize url [name]"
+    echo
+    echo "downloads site from url to READABILIZE_DIR and"
+    echo "inject readabilize.css to it's code. File can"
+    echo "be found with used font in extas/readabilize."
+    echo "It (or your version) should be placed in READABILIZE_DIR"
+    echo "If given name, file will be stored ass \$name.html"
+    echo "In the end page is run in browser of choice"
+fi
+
+if [[ -z "$READABILIZE_DIR" ]] || [[ -z "$BROWSER" ]]; then
+    echo "please make sure that following evironment values are set
+    READABILIZE_DIR – directory where documents are downloaded to
+        and where style data is stored.
+    BROWSER – command used to run web browser"
+    
+    exit 1
+fi
+
+if [[ -z $2 ]]; then
+    name=$(echo $url | sed 's#^.*/##')
+fi
+
+head_regx='</head'
+css_include='<link rel="stylesheet" type="text/css" href="readabilize.css">'
+
+curl "$1" \
+    | sed "s#$head_regx#$css_include$head_regx#" \
+    > "$READABILIZE_DIR/$name"
+
+$BROWSER "$READABILIZE_DIR/$name" &
