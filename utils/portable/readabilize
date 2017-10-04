@@ -33,7 +33,8 @@ head_regx='</head'
 css_include='<link rel="stylesheet" type="text/css" href="readabilize.css">'
 
 curl "$1" \
-    | sed "s#$head_regx#$css_include$head_regx#" \
+    | sed -e 's#<link rel="stylesheet"[^>]\+>##' \
+          -e "s#$head_regx#$css_include$head_regx#" \
     > "$READABILIZE_DIR/$name"
 
 $BROWSER "$READABILIZE_DIR/$name" &
