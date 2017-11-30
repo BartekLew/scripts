@@ -19,6 +19,8 @@ noremap <c-right> :tabe
 noremap <up> ?
 noremap <down> /
 noremap -hc :nohl<cr>
+noremap ; :cp<cr>
+noremap ' :cn<cr>
 
 noremap -ce :e ~/.vimrc<cr>
 noremap -ca :source ~/.vimrc<cr>
