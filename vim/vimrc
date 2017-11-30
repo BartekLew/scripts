@@ -9,6 +9,10 @@ set backspace=indent,eol,start
 set ruler
 syntax off
 
+if filereadable( "./.vimrc" ) && getcwd() != $HOME
+    source ./.vimrc
+endif
+
 noremap <left> :tabp<cr>
 noremap <right> :tabn<cr>
 noremap <c-right> :tabe

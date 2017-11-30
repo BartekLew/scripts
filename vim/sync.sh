@@ -1,7 +1,7 @@
 #/bin/bash -x
 
-places="$HOME/.vimrc vimrc"
 localBin="$HOME/.local/bin"
+places="$HOME/.vimrc vimrc"
 
 if [[ ! -f "$localBin/synch.sh" ]]; then
     mkdir -p "$localBin"
