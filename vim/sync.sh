@@ -12,7 +12,7 @@ fi
 
 diff $places
 if [ "$?" == "1" ]; then
-    if [ $(ls -t $places | head -n1) == vimrc ] ; then
+    if [ $(ls -t $places | head -n1) == $repo/vimrc ] ; then
             cp $repo/vimrc $HOME/.vimrc
 	else
             cp $HOME/.vimrc $repo/vimrc
