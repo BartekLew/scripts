@@ -18,3 +18,4 @@ noremap -hc :nohl<cr>
 
 noremap -ce :e ~/.vimrc<cr>
 noremap -ca :source ~/.vimrc<cr>
+noremap -cs :! "$HOME/.local/bin/sync.sh"<cr>
