@@ -24,4 +24,4 @@ noremap -ce :e ~/.vimrc<cr>
 noremap -ca :source ~/.vimrc<cr>
 noremap -cs :! "$HOME/.local/bin/sync.sh"<cr>
 
-noremap <c-g> :grep '<c-r><c-w>' .<cr>
+noremap <c-g> :grep -Rn '<c-r><c-w>' .<cr>
