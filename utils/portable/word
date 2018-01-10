@@ -1,0 +1,34 @@
+#!/bin/sh
+
+word=$1
+url='https://www.thefreedictionary.com'
+if [ ! -z "$word_stdurl" ]; then
+    url=$word_stdurl
+fi
+
+if [ -z "$word" ]; then
+    echo "$0 <word>"
+    echo "    look for a word in dictionary."
+    echo "    designed for thefreedictionary"
+    echo "    URL can be changed by exporting $word_stdurl"
+    exit 1
+fi
+
+curl $url/$word \
+    | grep 'div id="Definition"' \
+    | sed -e 's/<a[^>]*>/;/g' \
+          -e 's/<[^>]*>//g'     -e 's/[ \t]\+/ /g' \
+          -e 's/&[^;]\+;/ /g'   -e 's/(*[0-9]\+)*/\n&>/g' \
+    | grep -vP "^[\d\s]*$" \
+    | less 
+
+# SED code: not obvious, right?
+#            1. put semicolon instead of <a> rendered they
+#               separate using style.
+#            2. remove all tags
+#            3. compress all white space
+#            4. remove HTML entities
+#            5. break line for each number found
+#
+# GREP out all blank or digit-only lines.
+            
