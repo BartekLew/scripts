@@ -1,0 +1,9 @@
+#!/bin/sh
+
+for rdme in $(find $@ | grep README);
+do
+    echo ">>>>>>>>>>$rdme:"
+    cat "$rdme"
+    echo
+done | less
+

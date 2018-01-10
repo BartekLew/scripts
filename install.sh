@@ -10,7 +10,7 @@ if [[ -f $vimrc ]]; then
     cp $vimrc $vimrc.bak
     echo vimrc '->' $vimrc '->' $vimrc.bak
 fi
-cp vim/vimrc $vimrc
+#cp vim/vimrc $vimrc
 
 mkdir -p $installPrefix
 mkdir -p $installBin
