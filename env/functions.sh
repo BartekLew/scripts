@@ -12,3 +12,15 @@ do_math() {
     echo "scale=2;$@" | bc
 }
 
+lisp() {
+	if [[ -e ".lisprc" ]]; then
+		sbcl --load .lisprc
+	else
+		sbcl
+	fi
+}
+
+shrc() {
+	vim ~/.bashrc
+	source ~/.bashrc
+}
