@@ -33,6 +33,3 @@ elif [[ $(uname) == "Linux" ]]; then
     fi
 fi
 cp utils/portable/* $installBin
-
-make -C sbtd
-cp sbtd/sbtd "$installBin/"

@@ -1,1 +1,0 @@
-I like programming in scala, sbt and stuff, but the thing I don't like is time I wait until sbt starts. It's much better if I have sbt ran in background waiting for build command. That's what sbtd is – so that I can do that without shell access. It simply forks sbt and write to it using pipe. It writes to another pipe.
