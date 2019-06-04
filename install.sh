@@ -1,10 +1,10 @@
-#!/bin/sh -x
+#!/bin/bash -x
 
 installPrefix=~/.local
 installBin=$installPrefix/bin
 installEtc=$installPrefix/etc/workplace
 vimrc=~/.vimrc
-shrc=~/.zshrc
+shrc=~/.bashrc
 
 if [[ -f $vimrc ]]; then
     cp $vimrc $vimrc.bak
@@ -18,7 +18,8 @@ mkdir -p $installEtc
 
 cp template.tex $installPrefix/etc
 
-if uname | grep "CYGWIN" &> /dev/null; then
+uname | grep "CYGWIN" &> /dev/null
+if [[ $? == 0 ]]; then
     cp utils/cygwin/* $installBin
 elif [[ $(uname) == "Linux" ]]; then
     cp utils/linux/* $installBin
