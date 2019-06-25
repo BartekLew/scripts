@@ -3,6 +3,7 @@
 installPrefix=~/.local
 installBin=$installPrefix/bin
 installEtc=$installPrefix/etc/workplace
+installShare=$installPrefix/share
 vimrc=~/.vimrc
 shrc=~/.bashrc
 
@@ -31,5 +32,9 @@ elif [[ $(uname) == "Linux" ]]; then
         echo "" >> $shrc
         echo "$config_cmd" >> $shrc
     fi
+
+    mkdir -p $installShare
+    cp pipe-cl/pipe-cl $installBin
+    cp pipe-cl/pipe-cl.lisp $installShare
 fi
 cp utils/portable/* $installBin

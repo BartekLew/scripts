@@ -1,0 +1,31 @@
+#!/bin/sh -e
+
+SRC=pipe-cl.lisp
+if [ -e $SRC ]; then
+	SRC_PATH="$SRC"
+elif [ -e $HOME/.local/share/$SRC ]; then
+	SRC_PATH="$HOME/.local/share/$SRC"
+else
+	SRC_DIR=$(dirname $0)
+	if [ -e "$SRC_DIR/$SRC" ]; then
+		SRC_PATH="$SRC_DIR/$SRC"
+	else
+		echo "Cannot find $SRC!" >&2
+		exit 1
+	fi
+fi
+
+if [ $# -gt 2 ]; then
+	IN=$2
+	OUT=$3
+else
+	IN=/tmp/pcl.in
+	OUT=/tmp/pcl.out
+fi
+
+rm "$IN" "$OUT" | true
+mkfifo "$IN"
+mkfifo "$OUT"
+sbcl --script $SRC_PATH "$IN" "$OUT"
+rm "$IN"
+rm "$OUT"
