@@ -35,6 +35,7 @@ elif [[ $(uname) == "Linux" ]]; then
 
     mkdir -p $installShare
     cp pipe-cl/pipe-cl $installBin
+    cp pipe-cl/pcl $installBin
     cp pipe-cl/pipe-cl.lisp $installShare
 fi
 cp utils/portable/* $installBin

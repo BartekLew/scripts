@@ -9,8 +9,9 @@
 	(format t "2 parameters- pipes needed!")
 	(loop
 	(with-open-file (in (first argv) :direction :input)
+	(let ((*standard-input* in))
 	(loop (handler-case
 		(let ((cmd (read in nil :eof)))
 		(if (eql cmd :eof) (return)
 			(answer (eval cmd))))
-		(condition (c) (answer c))))))))
+		(condition (c) (answer c)))))))))
