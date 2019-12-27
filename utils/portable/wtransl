@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Script finds translations for a word using wikipedia
+
+srcl=$1
+word=$2
+langcodes="(en|ua|ru|de|pl)"
+
+curl https://$srcl.wikipedia.org/wiki/$word 2> /dev/null \
+    | grep interlanguage-link \
+    | sed -e 's#</li>#\n#g' -e 's#<li[^>]*>##g' | sed -e 's#^.*title="##' \
+    | grep -P "lang=\"$langcodes\"" \
+    | sed 's#".*$##'
