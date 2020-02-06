@@ -1,0 +1,9 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+    RS="\n\n";
+    FS="\n";
+}
+
+{ print NR "\n" $2 "\n" $3 "\n"; i++;} 
+
