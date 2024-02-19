@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Check all files(recursively) in current directory and compare to
+# other directory. Copy all files that don't exist in the other.
+
+set -uf
+dest=$1
+
+find | grep -vP "^./(snap|\.)" | {
+    while read file
+    do
+        if [ -d "$file" ]; then
+            if [ ! -d "$dest/$file" ]; then
+                echo "mkdir $file"
+                mkdir "$dest/$file"
+            fi
+        elif [ -f "$file" ]; then
+            if [ ! -e "$dest/$file" ]; then
+                echo "backup $file"
+                cp "$file" "$dest/$file"
+            fi
+        else
+            echo "Skip $file"
+        fi
+    done
+}
