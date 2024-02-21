@@ -1,0 +1,27 @@
+#!/bin/bash -xe
+
+# Input: Video file (argument)
+# Output: Directory with following frames $arg/%d.png
+# ENV: FPS (25 is default)
+
+if [ "$#" == 0 ]; then
+    echo "Required argument, video file name" > /dev/stderr
+    exit 1
+fi
+
+in=$1
+outdir="$(echo $in | sed -e 's/^.*\///' -e 's/\..*$//')-frames"
+
+if [ -z "$FPS" ];then
+    FPS=25
+fi
+
+mkdir $outdir
+ffmpeg -i "$in" -vf "fps=$FPS" -fps_mode passthrough "$outdir/%d.png"
+
+cd $outdir
+for f in *
+do
+    n=$(echo $f | sed 's/\..*$//')
+    mv "$f" "$(printf %.8d.png $n)"
+done
