@@ -1,0 +1,38 @@
+#!/bin/bash -x
+
+# Input: Directory with raw frames
+# Input: File with audio to be appended to video stream
+# Input: Output file name
+# Output: Output video file
+# ENV: FPS (default 25)
+# ENV: amap : custom -map parameter for ffmpeg matching audio stream
+
+if [ "$#" -lt 2 ]; then
+    echo "USAGE: $0 <frames-dir> <audio source> [<output file name>]" > /dev/stderr
+    exit 1
+fi
+
+if [ -z "$FPS" ]; then
+    FPS=25
+fi
+
+framedir=$1
+audio=$2
+outfile=$3
+
+extension=$(ls "$framedir" | head -n1 | sed 's/.*\.//')
+
+if [ -z "$outfile" ]; then
+    outfile="$(echo $framedir | sed 's/-frames$//').avi"
+fi
+
+if [ -z "$amap" ]; then
+    echo $audio | grep -P "wav|mp3|opus|flac|ogg" > /dev/null
+    if [ $? == 0 ]; then
+        amap='1:0'
+    else
+        amap='1:1'
+    fi
+fi
+
+ffmpeg -framerate $FPS -pattern_type glob -i $framedir/'*.'$extension -i "$audio" -q:v 0 "$outfile"
