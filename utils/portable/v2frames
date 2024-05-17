@@ -16,8 +16,13 @@ if [ -z "$FPS" ];then
     FPS=25
 fi
 
+if [ -z "$FFMPEG_FLAGS" ]; then
+    FFMPEG_FLAGS=""
+fi
+
 mkdir $outdir
-ffmpeg -i "$in" -vf "fps=$FPS" -fps_mode passthrough "$outdir/%d.png"
+
+ffmpeg $FFMPEG_FLAGS -i "$in" -vf "fps=$FPS" -fps_mode passthrough "$outdir/%d.png"
 
 cd $outdir
 for f in *
